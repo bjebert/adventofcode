@@ -1,0 +1,101 @@
+from Utils import *
+
+# Part 1
+
+inp = rdl("1.txt")
+
+for line in inp:
+    print(line)
+    x, y = line.split()
+
+### REGISTRY ###
+
+reg = {'a': 0, 'b': 0, 'c': 0, 'd': 0}
+reg = [0] * 4
+
+i = 0
+while i < len(inp):
+    line = inp[i]
+    ls = line.split()
+    instr = ls[0]
+
+    if instr == 'x':
+        pass
+    elif instr == '':
+        pass
+    elif instr == '':
+        pass
+    elif instr == '':
+        pass
+
+    i += 1
+
+
+### BFS ###
+
+def get_neighbours(x, y):
+    neighbours = []
+
+    # ADJACENT (U, L, R, D)
+    for x2, y2 in [(x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1)]:
+        if (x2, y2) in grid and grid[(x2, y2)] == '.':
+                neighbours.append((x2, y2))
+
+    # DIAGONAL
+    for x2 in range(x-1, x+2):
+        for y2 in range(y-1, y+2):
+            if (x2, y2) in grid and (x2 != x or y2 != y) and grid[(x2, y2)] == '.':
+                neighbours.append((x2, y2))
+
+    return neighbours
+
+v = set()
+start = (0, 0)
+q = [[start]]
+v.add(start)
+
+while q:
+    curr = q.pop(0)
+    x, y = curr[-1]
+
+    neighbours = []
+
+    # DIAGONAL
+    for x2 in range(x-1, x+2):
+        for y2 in range(y-1, y+2):
+            if (x2, y2) in grid and (x2 != x or y2 != y) and grid[(x2, y2)] == '.':
+                neighbours.append((x2, y2))
+
+    for n in neighbours:
+        if n not in v:
+            v.add(n)
+            new = list(curr)
+            new.append(n)
+            q.append(new)
+
+
+### DJIKSTRA ###
+
+def djikstra(grid, start, end):
+    v = set()
+    pq = PriorityQueue()
+    pq.put((0, start))
+
+    dist = defaultdict(lambda: math.inf)
+    dist[start] = 0
+
+    while not pq.empty():
+        score, (x, y) = pq.get()
+        v.add((x, y))
+
+        for x2, y2 in [(x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1)]:
+            if (x2, y2) in grid:
+
+                if (x2, y2) not in v:
+                    cost = grid[(x2, y2)]  # Cost of travelling to x2, y2
+
+                    if dist[(x, y)] + cost < dist[(x2, y2)]:
+                        dist[(x2, y2)] = dist[(x, y)] + cost
+                        pq.put((dist[(x2, y2)], (x2, y2)))
+
+    return dist[end]
