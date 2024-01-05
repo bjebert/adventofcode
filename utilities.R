@@ -1,5 +1,9 @@
 get_input <- function(aoc_id, parse = T, deesblake = F, cache = F) {
+<<<<<<< HEAD
     f <- sprintf("D:/projects/adventofcode/2023/%s.txt", gsub("/", "-", aoc_id))
+=======
+    f <- sprintf("2023/%s.txt", gsub("/", "-", aoc_id))
+>>>>>>> 8432427dbae880ca00b960a45fc36be61a89c179
     if(cache && file.exists(f)) {
         return(readLines(f))
     }
