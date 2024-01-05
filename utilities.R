@@ -1,5 +1,5 @@
 get_input <- function(aoc_id, parse = T, deesblake = F, cache = F) {
-    f <- sprintf("D:/projects/aoc/inputs/%s.txt", gsub("/", "-", aoc_id))
+    f <- sprintf("2023/%s.txt", gsub("/", "-", aoc_id))
     if(cache && file.exists(f)) {
         return(readLines(f))
     }
