@@ -1,17 +1,3 @@
-library(data.table)
-
-inp <- strsplit("broadcaster -> a, b, c
-%a -> b
-%b -> c
-%c -> inv
-&inv -> a", "\n")[[1]]
-
-inp <- strsplit("broadcaster -> a
-%a -> inv, con
-&inv -> b
-%b -> con
-&con -> output", "\n")[[1]]
-
 inp <- readLines("2023/20.txt")
 
 module_names <- sapply(strsplit(inp, " -> "), function(x) x[1])
@@ -35,15 +21,10 @@ states <- setNames(lapply(1:length(modules), function(i) {
 }), names(modules))
 
 
-# Part 1 ------------------------------------------------------------------
-
-low_pulses <- 0
-high_pulses <- 0
+# Part 2 ------------------------------------------------------------------
 
 
 push <- function(states) {
-    low_pulses <<- low_pulses + 1  # Button
-    
     pulses <- lapply(1:length(modules[["broadcaster"]]), function(i) {
         list(sender = "broadcaster",
              target = modules[["broadcaster"]][[i]],
@@ -57,12 +38,6 @@ push <- function(states) {
 
         for(pulse in pulses) {
             for(target in pulse[["target"]]) {
-                if(pulse[["pulse"]] == "low") {
-                    low_pulses <<- low_pulses + 1
-                } else if(pulse[["pulse"]] == "high") {
-                    high_pulses <<- high_pulses + 1
-                }
-                
                 if(target %in% partial_names) {
                     target_module <- modules[which(partial_names == target)]
                     is_flipflop <- grepl("%", names(target_module))
@@ -141,8 +116,32 @@ push <- function(states) {
 }
 
 
-for(i in 1:1000) {
+i <- 1
+tq <- data.table()
+pf <- data.table()
+kx <- data.table()
+rj <- data.table()
+
+while(i < 10000) {
+    tq <- rbind(tq, as.data.table(t(states[["&tq"]])))
+    pf <- rbind(pf, as.data.table(t(states[["&pf"]])))
+    kx <- rbind(kx, as.data.table(t(states[["&kx"]])))
+    rj <- rbind(rj, as.data.table(t(states[["&rj"]])))
+    
     states <- push(states)
+    i <- i + 1
 }
 
-low_pulses * high_pulses
+which(rowSums(tq == "low") == ncol(tq))
+which(rowSums(pf == "low") == ncol(pf))
+which(rowSums(kx == "low") == ncol(kx))
+which(rowSums(rj == "low") == ncol(rj))
+
+# cycle lengths at which a low signal is sent out:
+# tq: 3767
+# pf: 3779 
+# kx: 4057
+# rj: 3889
+
+3767*3779*4057*3889
+options(scipen=99)

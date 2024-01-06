@@ -75,6 +75,27 @@ map2mat <- function(map, default = ".") {
     mat2
 }
 
+
+get_4nb <- function(pos) {
+    list(c(pos[1] + 1, pos[2]),
+         c(pos[1] - 1, pos[2]),
+         c(pos[1], pos[2] + 1),
+         c(pos[1], pos[2] - 1))
+}
+
+get_8nb <- function(pos) {
+    list(
+        c(pos[1] + 1, pos[2]),     # North
+        c(pos[1] - 1, pos[2]),     # South
+        c(pos[1], pos[2] + 1),     # East
+        c(pos[1], pos[2] - 1),     # West
+        c(pos[1] + 1, pos[2] + 1), # Northeast
+        c(pos[1] + 1, pos[2] - 1), # Northwest
+        c(pos[1] - 1, pos[2] + 1), # Southeast
+        c(pos[1] - 1, pos[2] - 1)  # Southwest
+    )
+}
+
 coord2pos <- function(coord) as.numeric(c(strsplit(coord, ",")[[1]][1], strsplit(coord, ",")[[1]][2]))
 pos2coord <- function(pos) sprintf("%s,%s", pos[1], pos[2])
 
