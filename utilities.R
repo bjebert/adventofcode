@@ -96,6 +96,13 @@ get_8nb <- function(pos) {
     )
 }
 
+
+factors <- function(n) {
+    n <- abs(n)
+    f1 <- (1:floor(sqrt(n)))[sapply(1:floor(sqrt(n)), function(i) n %% i == 0)]
+    unique(sort(c(f1, n / f1)))
+}
+
 coord2pos <- function(coord) as.numeric(c(strsplit(coord, ",")[[1]][1], strsplit(coord, ",")[[1]][2]))
 pos2coord <- function(pos) sprintf("%s,%s", pos[1], pos[2])
 
