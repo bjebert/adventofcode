@@ -8,12 +8,12 @@ get_input <- function(aoc_id, parse = T, deesblake = F, cache = F) {
     
     aoc_split <- as.numeric(strsplit(aoc_id, "/")[[1]])
     address <- sprintf("https://adventofcode.com/%s/day/%s/input", aoc_split[1], aoc_split[2])
+    sessions <- readLines("session.txt")
     
     if(deesblake) {
-        cookie <- c(`session` = "53616c7465645f5fd848af91497cd75f94827fea4c59e945c8047f19d81a08b1ca9ce96774cdc792f614a818cd900a384c9c89a5e926dbbfabbc45147d5aa8f2")
+        cookie <- c(`session` = sessions[1])
     } else {
-        # bjebert (main)
-        cookie <- c(`session` = "53616c7465645f5f6d5a81ceabc94d981066ceb62f4a8b237cd7de94e76571605dbe550bc56965e84a6fb32d688b33ff86828e548bb8140504d5fdb840fb8ba4")
+        cookie <- c(`session` = sessions[2])
     }
     
     res <- content(GET(address, set_cookies(cookie)), encoding = 'UTF-8')
