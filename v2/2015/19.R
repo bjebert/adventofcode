@@ -191,7 +191,7 @@ for(k in 1:100) {
     }
 }
 
-# 2:14:33 
+# 2:14:33 (65th)
 # (solved once again in Python luckily due to non-determinism of sorting sets)
 # (non-deterministic solution in a loop added to R)
 # (bullshit problem and solution)
