@@ -5,7 +5,7 @@ import itertools
 
 # Part 1
 
-inp = rdl("19.txt")
+inp = rdl("../inputs/2015-19.txt")
 
 mol = inp[-1]
 subs = dict()
