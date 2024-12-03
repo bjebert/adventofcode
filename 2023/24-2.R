@@ -277,8 +277,8 @@ inc <- function(n, m) {
     return(r)
 }
 
-n <- c(1, 2, 3)
-m <- c(3, 4, 7)
+n <- c(0, 1, 3)
+m <- c(1, 4, 7)
 inc(n, m)
 
 

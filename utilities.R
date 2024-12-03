@@ -4,6 +4,7 @@ source("utilities/data.R")
 
 library(plot.matrix)
 library(combinat)
+library(openssl)  # md5 hashes
 
 
 # Matrix ------------------------------------------------------------------
@@ -18,10 +19,10 @@ move_map <- list(`^` = c(1, 0), N = c(1, 0), U = c(1, 0),
                  `<` = c(0, -1), W = c(0, -1), L = c(0, -1))
 
 get_4nb <- function(pos) {
-    list(c(pos[1] + 1, pos[2]),
-         c(pos[1] - 1, pos[2]),
-         c(pos[1], pos[2] + 1),
-         c(pos[1], pos[2] - 1))
+    list(c(pos[1] + 1, pos[2]),  # North
+         c(pos[1] - 1, pos[2]),  # South
+         c(pos[1], pos[2] + 1),  # East
+         c(pos[1], pos[2] - 1))  # West
 }
 
 get_8nb <- function(pos) {
