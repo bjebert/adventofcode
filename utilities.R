@@ -3,8 +3,9 @@ source("utilities/data.R")
 # Helpful libraries
 
 library(plot.matrix)
-library(combinat)
-library(openssl)  # md5 hashes
+library(combinat)     # t(combinat::combn(1:10, 3))
+library(gtools)       # gtools::permutations(v = letters[1:10], n = 10, r = 3)
+library(openssl)      # openssl::md5
 
 
 # Matrix ------------------------------------------------------------------
