@@ -2,4 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+<<<<<<< HEAD
 *.txt
+=======
+*.txt
+.Rproj.user/*
+>>>>>>> 57859467950c2ac3b49a2163344b572250ecf2a7
