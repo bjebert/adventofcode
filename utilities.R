@@ -20,46 +20,53 @@ move_map <- list(`^` = c(-1, 0), N = c(-1, 0), U = c(-1, 0),
                  `<` = c(0, -1), W = c(0, -1), L = c(0, -1))
 
 get_4nb <- function(pos) {
-    list(c(pos[1] + 1, pos[2]),  # North
-         c(pos[1] - 1, pos[2]),  # South
+    list(c(pos[1] - 1, pos[2]),  # North
+         c(pos[1] + 1, pos[2]),  # South
          c(pos[1], pos[2] + 1),  # East
          c(pos[1], pos[2] - 1))  # West
 }
 
 get_8nb <- function(pos) {
     list(
-        c(pos[1] + 1, pos[2]),     # North
-        c(pos[1] - 1, pos[2]),     # South
+        c(pos[1] - 1, pos[2]),     # North
+        c(pos[1] + 1, pos[2]),     # South
         c(pos[1], pos[2] + 1),     # East
         c(pos[1], pos[2] - 1),     # West
-        c(pos[1] + 1, pos[2] + 1), # Northeast
-        c(pos[1] + 1, pos[2] - 1), # Northwest
-        c(pos[1] - 1, pos[2] + 1), # Southeast
-        c(pos[1] - 1, pos[2] - 1)  # Southwest
+        c(pos[1] - 1, pos[2] + 1), # Northeast
+        c(pos[1] - 1, pos[2] - 1), # Northwest
+        c(pos[1] + 1, pos[2] + 1), # Southeast
+        c(pos[1] + 1, pos[2] - 1)  # Southwest
     )
 }
 
-coord2pos <- function(coord) as.numeric(strsplit(coord, ",", fixed = TRUE)[[1]])
-pos2coord <- function(pos) paste0(pos, collapse = ",")
 
-get_4nb_coord <- function(coord) {
-    sapply(get_4nb(coord2pos(coord)), pos2coord)
+factors <- function(n) {
+    n <- abs(n)
+    f1 <- (1:floor(sqrt(n)))[sapply(1:floor(sqrt(n)), function(i) n %% i == 0)]
+    unique(sort(c(f1, n / f1)))
 }
 
-get_8nb_coord <- function(coord) {  # slow implementation
-    sapply(get_8nb(coord2pos(coord)), pos2coord)
+str2pos <- function(str) as.numeric(strsplit(str, ",", fixed = TRUE)[[1]])
+pos2str <- function(pos) paste0(pos, collapse = ",")
+
+get_4nb_str <- function(str) {
+    sapply(get_4nb(str2pos(str)), pos2str)
 }
 
-get_4nb_coord_fast <- function(coord) {  # fast implementation
-    pos <- coord2pos(coord)
+get_8nb_str <- function(str) {  # slow implementation
+    sapply(get_8nb(str2pos(str)), pos2str)
+}
+
+get_4nb_str_fast <- function(str) {  # fast implementation
+    pos <- str2pos(str)
     return(sprintf("%d,%d",
         c(pos[1] + 1, pos[1] - 1, pos[1], pos[1]),
         c(pos[2], pos[2], pos[2] + 1, pos[2] - 1)
     ))
 }
 
-get_8nb_coord_fast <- function(coord) {  # fast implementation
-    pos <- coord2pos(coord)
+get_8nb_str_fast <- function(str) {  # fast implementation
+    pos <- str2pos(str)
     return(sprintf("%d,%d",
         c(pos[1] + 1, pos[1] - 1, pos[1], pos[1], pos[1] + 1, pos[1] + 1, pos[1] - 1, pos[1] - 1),
         c(pos[2], pos[2], pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1)
