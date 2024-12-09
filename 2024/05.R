@@ -79,7 +79,7 @@ z <- lapply(p2, function(p) {
             break
         }
         
-        # move element after incorrect element        
+        # swap elements        
         i <- res[[1]]
         j <- res[[2]]
         
