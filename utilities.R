@@ -1,3 +1,4 @@
+options(scipen = 99)
 source("utilities/data.R")
 
 # Helpful libraries
@@ -55,15 +56,15 @@ factors <- function(n) {
 str2pos <- function(str) as.numeric(strsplit(str, ",", fixed = TRUE)[[1]])
 pos2str <- function(pos) paste0(pos, collapse = ",")
 
-get_4nb_str <- function(str) {
+get_4nb_str_slow <- function(str) {
     sapply(get_4nb(str2pos(str)), pos2str)
 }
 
-get_8nb_str <- function(str) {  # slow implementation
+get_8nb_str_slow <- function(str) {  # slow implementation
     sapply(get_8nb(str2pos(str)), pos2str)
 }
 
-get_4nb_str_fast <- function(str) {  # fast implementation
+get_4nb_str <- function(str) {  # fast implementation
     pos <- str2pos(str)
     return(sprintf("%d,%d",
         c(pos[1] + 1, pos[1] - 1, pos[1], pos[1]),
@@ -71,7 +72,7 @@ get_4nb_str_fast <- function(str) {  # fast implementation
     ))
 }
 
-get_8nb_str_fast <- function(str) {  # fast implementation
+get_8nb_str <- function(str) {  # fast implementation
     pos <- str2pos(str)
     return(sprintf("%d,%d",
         c(pos[1] + 1, pos[1] - 1, pos[1], pos[1], pos[1] + 1, pos[1] + 1, pos[1] - 1, pos[1] - 1),
