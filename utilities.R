@@ -8,6 +8,12 @@ library(gtools)       # gtools::permutations(v = letters[1:10], n = 10, r = 3)
 library(openssl)      # openssl::md5
 
 
+# Permutations/combinations -----------------------------------------------
+
+comb <- function(set, n) t(combinat::combn(set, n))
+perm <- function(set, n, repeats = FALSE) gtools::permutations(v = set, n = length(set), r = n, repeats.allowed = repeats)
+
+
 # Matrix ------------------------------------------------------------------
 
 rotate <- function(x) t(apply(x, 2, rev)) 
