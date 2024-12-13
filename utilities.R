@@ -7,6 +7,7 @@ library(plot.matrix)
 library(combinat)     # t(combinat::combn(1:10, 3))
 library(gtools)       # gtools::permutations(v = letters[1:10], n = 10, r = 3)
 library(openssl)      # openssl::md5
+library(gmp)          # gmp::as.bigz(n)
 
 
 # Permutations/combinations -----------------------------------------------
@@ -63,18 +64,18 @@ get_8nb_str_slow <- function(str) {  # slow implementation
     sapply(get_8nb(str2pos(str)), pos2str)
 }
 
-get_4nb_str <- function(str) {  # fast implementation
+get_4nb_str <- function(str) {  # fast implementation (N,S,E,W)
     pos <- str2pos(str)
     return(sprintf("%d,%d",
-        c(pos[1] + 1, pos[1] - 1, pos[1], pos[1]),
+        c(pos[1] - 1, pos[1] + 1, pos[1], pos[1]),
         c(pos[2], pos[2], pos[2] + 1, pos[2] - 1)
     ))
 }
 
-get_8nb_str <- function(str) {  # fast implementation
+get_8nb_str <- function(str) {  # fast implementation (N,S,E,W,NE,NW,SE,SW)
     pos <- str2pos(str)
     return(sprintf("%d,%d",
-        c(pos[1] + 1, pos[1] - 1, pos[1], pos[1], pos[1] + 1, pos[1] + 1, pos[1] - 1, pos[1] - 1),
+        c(pos[1] - 1, pos[1] + 1, pos[1], pos[1], pos[1] - 1, pos[1] - 1, pos[1] + 1, pos[1] + 1),
         c(pos[2], pos[2], pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1)
     ))
 }
