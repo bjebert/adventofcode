@@ -38,7 +38,7 @@ v <- t(sapply(1:length(p1), function(i) c(v1[i], v2[i])))
 
 deltas <- NULL
 
-for(step in 1:7603) {
+for(step in 1:10000) {
     p <- p + v
     p[,1] <- p[,1] %% width
     p[,2] <- p[,2] %% height
@@ -51,17 +51,21 @@ for(step in 1:7603) {
     print(delta)
     # plot(m)
     
+    # part 2 ------------------------------------------------------------------
+    
     deltas <- c(deltas, delta)
+    
+    if(delta < 12000000) {
+        m <- matrix(0, nrow = height, ncol = width)
+        for(x in 1:nrow(p)) {
+            m[p[x,2]+1, p[x,1]+1] <- 1
+        }
+        
+        plot(m)
+    }
 }
 
-if(delta < 12000000) {
-    m <- matrix(0, nrow = height, ncol = width)
-    for(x in 1:nrow(p)) {
-        m[p[x,2]+1, p[x,1]+1] <- 1
-    }
-    
-    plot(m)
-}
+# part 1 ------------------------------------------------------------------
 
 ww <- floor(width / 2) - 1
 wh <- floor(height / 2) - 1
