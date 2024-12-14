@@ -38,6 +38,12 @@ get_input <- function(aoc_id, parse = F, user = "bjebert", cache = F) {
 }
 
 
+nums <- function(inp) {
+    nums_ex <- gregexpr("-?\\d+", inp)
+    lapply(regmatches(inp, nums_ex), as.numeric)
+}
+
+
 inp2mat <- function(inp) {
     matrix(strsplit(paste(inp, collapse = ""), "")[[1]], nrow = length(inp), ncol = nchar(inp[1]), byrow = T)
 }

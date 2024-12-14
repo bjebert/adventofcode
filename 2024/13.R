@@ -8,7 +8,6 @@ library(Rmpfr)
 # Problem -----------------------------------------------------------------
 
 inp <- get_input("2024/13", parse = F, user = "bjebert", cache = F)
-inp
 
 # sum(sapply(1:length(ax), function(i) {
 #     x_a <- ax[i]
