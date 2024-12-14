@@ -3,6 +3,8 @@
 rm(list = ls())
 source("utilities.R")
 
+library(Rmpfr)
+
 # Problem -----------------------------------------------------------------
 
 inp <- get_input("2024/13", parse = F, user = "bjebert", cache = F)
@@ -70,6 +72,59 @@ prizex <- 10000000000000 + prizex
 prizey <- 10000000000000 + prizey
 
 
+dio2d <- function(a, b, c, positive_yc = FALSE, verbose = FALSE) {
+    a <- mpfr(a, precBits = 128)
+    b <- mpfr(b, precBits = 128)
+    c <- mpfr(c, precBits = 128)
+    
+    if(a %% 1 != 0 || b %% 1 != 0 || c %% 1 != 0) {
+        stop("Floating points in dio2d function, need to increase precBits?")
+    }
+    
+    if((c / abs(GCD(asNumeric(a), asNumeric(b)))) %% 1 != 0) {
+        if(verbose) print("No solutions, as c is not a multiple of the greatest common divisor of a and b.")
+        return(NA)
+    }
+    
+    # Shrink eqn if possible
+    shrink <- GCD(GCD(asNumeric(a), asNumeric(b)), asNumeric(c))
+    a <- a / shrink
+    b <- b / shrink
+    c <- c / shrink
+    
+    e <- extGCD(asNumeric(a), asNumeric(b))
+    adj <- c / e[1]
+    
+    x0 <- adj * e[2]
+    y0 <- adj * e[3]
+    
+    a <- a / e[1]
+    b <- b / e[1]
+    
+    # scale general soln for y (as that is the coef we carry forwards, x may end up with large vals)
+    scalar <- round(y0 / a)
+    
+    small_x0 <- x0 + b * scalar
+    small_y0 <- y0 - a * scalar
+    
+    # Flip signs by multiplying n by -1 for both eqns
+    if(b < 0 && -a < 0) {
+        b <- -b
+        a <- -a
+    }
+    
+    if(positive_yc) {  # If we want to require y0 to be positive, manipulate constants here
+        if(small_y0 < 0) {  
+            small_x0 <- small_x0 + b
+            small_y0 <- small_y0 - a
+        }
+    }
+    
+    if(verbose) print(sprintf("x = %sn + %s; y = %sn + %s", asNumeric(b), asNumeric(small_x0), asNumeric(-a), asNumeric(small_y0)))
+    return(c(b, small_x0, -a, small_y0))
+}
+
+
 get_presses <- function(x_a, x_b, x_c, y_a, y_b, y_c, verbose = T) {
     divides <- (x_c / gcd(x_a, x_b)) %% 1 == 0 && (y_c / gcd(y_a, y_b)) %% 1 == 0
     
@@ -79,6 +134,7 @@ get_presses <- function(x_a, x_b, x_c, y_a, y_b, y_c, verbose = T) {
     
     res_x <- dio2d(x_a, x_b, x_c, verbose = verbose)
     res_y <- dio2d(y_a, y_b, y_c, verbose = verbose)
+    
     
     n0 <- ceiling(-res_x[2] / res_x[1])  # minimise press_a while keeping it positive
     mod_n <- 1e0
@@ -140,5 +196,4 @@ press_mat <- t(sapply(1:length(prizex), function(i) {
 }))
 
 
-press_filt <- press_mat[!is.na(press_mat[,1]), ]
 sum(rowSums(press_filt * matrix(rep(c(3, 1), nrow(press_filt)), ncol = 2, byrow = T)))

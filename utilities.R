@@ -8,7 +8,8 @@ library(combinat)     # t(combinat::combn(1:10, 3))
 library(gtools)       # gtools::permutations(v = letters[1:10], n = 10, r = 3)
 library(openssl)      # openssl::md5
 library(gmp)          # gmp::as.bigz(n)
-
+library(Rmpfr)
+library(numbers)      # numbers::extGCD(a, b)
 
 # Permutations/combinations -----------------------------------------------
 
