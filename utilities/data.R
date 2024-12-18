@@ -38,9 +38,10 @@ get_input <- function(aoc_id, parse = F, user = "bjebert", cache = F) {
 }
 
 
-nums <- function(inp) {
+nums <- function(inp, mat = F) {
     nums_ex <- gregexpr("-?\\d+", inp)
-    lapply(regmatches(inp, nums_ex), as.numeric)
+    n <- lapply(regmatches(inp, nums_ex), as.numeric)
+    if(mat) return(t(sapply(n, function(x) x))) else return(n)
 }
 
 

@@ -11,6 +11,8 @@ library(gmp)          # gmp::as.bigz(n)
 library(Rmpfr)
 library(numbers)      # numbers::extGCD(a, b)
 
+i <- 1  # Debug
+
 # Permutations/combinations -----------------------------------------------
 
 comb <- function(set, n) t(combinat::combn(set, n))
