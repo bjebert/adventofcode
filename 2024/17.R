@@ -97,8 +97,8 @@ run <- function(a) {
     paste(out, collapse = ",")
 }
 
-# analysis ----------------------------------------------------------------
 
+# xor for nums 0-7
 xor <- function(n, x) {
     if(x == 0) return(n)
     if(x == 1) if(n %% 2 == 0) return(n + 1) else return(n - 1)
@@ -110,7 +110,6 @@ xor <- function(n, x) {
     if(x == 7) return(n - c(-5L, -3L, -1L, 1L, 3L, 5L, 7L, -7L)[(n - 1) %% 8 + 1])
     return(NA)
 }
-
 
 
 # cheese method (used for original solution) ------------------------------
@@ -132,6 +131,7 @@ z <- apply(mat != matrix(rep(program, nrow(mat)), ncol = ncol(mat), byrow = T), 
 s[which(z == min(z))]
 print(min(z))
 
+solve(236555995274861)
 solve(236555995274943)
 program
 
@@ -146,25 +146,24 @@ solve <- function(a) {
     out
 }
 
-
-# analysis ----------------------------------------------------------------
-
-a <- 236555995274943
-
-b <- xor(xor(floor(a / 2^xor(a %% 8, 3)), xor(a %% 8, 3)), 5)
-out <- c(out, b %% 8)
-a <- floor(a / 8)
+# solve analytically ------------------------------------------------------
+# done day after
 
 
-while(a > 0) {
-    b <- xor(a %% 8, 3)
-    b <- xor(floor(a / 2^b), b)
-    b <- xor(b, 5)
-    
-    b <- xor5(bitwXor(floor(a / 2^b), b))
-    print(b %% 8)
-    a <- floor(a / 8)
+program <- nums(inp)[[5]]
+
+engineer <- function(program) {
+    a <- 0
+    for(i in length(program):1) {
+        a_range <- sapply(a, function(x) (x*8) + 0:7)
+        a_range <- a_range[a_range != 0]
+        a <- a_range[sapply(a_range, function(x) xor(floor(x / 2 ^ xor(x %% 8, 3)), xor(x %% 8, 3))) %% 8 == xor(program[i], 5)]
+        
+        if(length(a) == 0) {
+            return(NA)
+        }
+    }
+    return(a)
 }
-
-
-
+    
+engineer(program)
