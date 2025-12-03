@@ -73,18 +73,51 @@ get_8nb_str_slow <- function(str) {  # slow implementation
 get_4nb_str <- function(str) {  # fast implementation (N,S,E,W)
     pos <- str2pos(str)
     return(sprintf("%d,%d",
-        c(pos[1] - 1, pos[1] + 1, pos[1], pos[1]),
-        c(pos[2], pos[2], pos[2] + 1, pos[2] - 1)
+                   c(pos[1] - 1, pos[1] + 1, pos[1], pos[1]),
+                   c(pos[2], pos[2], pos[2] + 1, pos[2] - 1)
     ))
 }
 
 get_8nb_str <- function(str) {  # fast implementation (N,S,E,W,NE,NW,SE,SW)
     pos <- str2pos(str)
     return(sprintf("%d,%d",
-        c(pos[1] - 1, pos[1] + 1, pos[1], pos[1], pos[1] - 1, pos[1] - 1, pos[1] + 1, pos[1] + 1),
-        c(pos[2], pos[2], pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1)
+                   c(pos[1] - 1, pos[1] + 1, pos[1], pos[1], pos[1] - 1, pos[1] - 1, pos[1] + 1, pos[1] + 1),
+                   c(pos[2], pos[2], pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1, pos[2] + 1, pos[2] - 1)
     ))
 }
+
+
+# Pattern -----------------------------------------------------------------
+
+pattern <- function(x, offset = FALSE) {  # find repeating sub-sequences of a sequence x 
+    Lx <- length(x)
+    while(TRUE) {
+        for(n in 2:floor(length(x)/2)) {
+            if(length(unique(x[seq(1, length(x), n)])) == 1) {
+                s <- seq(1, length(x), n)
+                
+                subseqs <- lapply(1:(length(x) %/% n), function(j) {
+                    x[s[j]:(s[j]+n-1)]
+                })
+                
+                if(length(unique(subseqs)) == 1) {
+                    return(list(seq = subseqs[[1]], n = n, offset = Lx - length(x)))
+                }
+            }
+        }
+        
+        if(!offset || length(x) < (Lx/2)) {
+            return(NULL)
+        }
+        
+        x <- x[-1]
+        
+        if(Lx - length(x) %% 10 == 0) {
+            print(sprintf('no subsets found, current offset: %s', Lx - length(x)))
+        }
+    }
+}
+
 
 # Search ------------------------------------------------------------------
 
@@ -95,10 +128,7 @@ search <- function() {
     walls <- names(map)[map == '#']
     start <- names(map)[map == 'S']
     end <- names(map)[map == 'E']
-}
-
-
-bfs <- function(walls, start, end) {  # A simple BFS function (with no directional or other constraints)
+    
     Q <- list(list(pos = start, path = NULL))
     v <- setNames(0, start)
     
@@ -126,7 +156,7 @@ bfs <- function(walls, start, end) {  # A simple BFS function (with no direction
             } else if(steps == best) {
                 paths <- c(paths, path)
             }
-                        
+            
             next
         }
         
@@ -153,6 +183,5 @@ bfs <- function(walls, start, end) {  # A simple BFS function (with no direction
     return(list(best = best, 
                 paths = paths))
 }
-
 
 
