@@ -1,8 +1,8 @@
 get_input <- function(aoc_id, parse = F, user = "bjebert", cache = F) {
-    f <- sprintf("2023/%s.txt", gsub("/", "-", aoc_id))
-    if(cache && file.exists(f)) {
-        return(readLines(f))
-    }
+    # f <- sprintf("2023/%s.txt", gsub("/", "-", aoc_id))
+    # if(cache && file.exists(f)) {
+    #     return(readLines(f))
+    # }
     
     library(httr)
     
@@ -16,7 +16,7 @@ get_input <- function(aoc_id, parse = F, user = "bjebert", cache = F) {
     res <- content(GET(address, set_cookies(cookie)), encoding = 'UTF-8')
     lines <- strsplit(res, "\n")[[1]]
     
-    writeLines(lines, f)
+    # writeLines(lines, f)
     
     if(!parse) {
         return(lines)
@@ -35,6 +35,13 @@ get_input <- function(aoc_id, parse = F, user = "bjebert", cache = F) {
     } else {
         return(lines)
     }
+}
+
+
+nums <- function(inp, mat = F) {
+    nums_ex <- gregexpr("-?\\d+", inp)
+    n <- lapply(regmatches(inp, nums_ex), as.numeric)
+    if(mat) return(t(sapply(n, function(x) x))) else return(n)
 }
 
 
