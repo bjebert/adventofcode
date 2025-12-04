@@ -1,5 +1,6 @@
 options(scipen = 99)
 source("utilities/data.R")
+source("utilities/primes.R")
 
 # Helpful libraries
 
