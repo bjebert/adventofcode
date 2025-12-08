@@ -73,6 +73,3 @@ fnew <- unique(fnew[order(sapply(fnew, function(x) x[1]))])
 sum(sapply(fnew, function(x) sum(x[2] - x[1] + 1)))
 
 all(sapply(1:(length(fnew) - 1), function(i) fnew[[i]][2] < fnew[[i+1]][1]))
-x <- 29
-fsort[x:(x+4)]
-fnew[(x:(x+4)) - 3]
