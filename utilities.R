@@ -12,6 +12,7 @@ library(gmp)          # gmp::as.bigz(n)
 library(Rmpfr)
 library(numbers)      # numbers::extGCD(a, b)
 library(bit64)
+library(memoise)
 
 source("utilities/data.R")
 source("utilities/bitops.R")
